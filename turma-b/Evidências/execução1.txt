@@ -1,0 +1,226 @@
+**Atividade Docker Compose — Turma B — 08/10/2026**
+
+**Primeira execução — antes de qualquer alteração**
+
+**Comandos executados:**
+
+1. `docker compose ps`
+2. `docker compose up -d`
+3. `docker compose ps`
+4. `docker compose logs --no-color`
+5. `docker compose ps`
+
+**Observações:**
+
+Na primeira consulta, nenhum contêiner do projeto estava listado. Após executar `docker compose up -d`, as imagens dos serviços `api` e `portal` foram construídas e os dois contêineres foram iniciados.
+
+Na consulta posterior, ambos estavam com status `Up`. O portal publicou a porta `8081` no endereço local `127.0.0.1`. A API apresentou no log a mensagem de inicialização com a porta `3001`.
+
+Ao acessar `http://localhost:8081`, a página foi carregada, mas apresentou erros HTTP 502 nos endpoints `/api/saude`, `/api/livros` e `/api/reservas`. A tabela de livros e a listagem de reservas não puderam ser carregadas.
+
+**Hipótese inicial:** possível incompatibilidade entre a porta em que a API escuta e a porta utilizada pelo portal para encaminhar as requisições. A hipótese ainda precisa ser confirmada pela análise das configurações.
+
+**Estado:** nenhum arquivo do projeto foi alterado até este registro.
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+PS C:\Users\Unicesumar\Desktop\turma-b> docker compose ps
+NAME      IMAGE     COMMAND   SERVICE   CREATED   STATUS    PORTS
+PS C:\Users\Unicesumar\Desktop\turma-b> docker compose up -d
+#1 [internal] load local bake definitions
+#1 reading from stdin 989B 0.0s done
+#1 DONE 0.0s
+
+#2 [api internal] load build definition from Dockerfile
+#2 transferring dockerfile: 169B done
+#2 DONE 0.0s
+
+#3 [portal internal] load build definition from Dockerfile
+#3 transferring dockerfile: 186B done
+#3 DONE 0.0s
+
+#4 [portal internal] load metadata for docker.io/library/nginx:alpine
+#4 DONE 2.3s
+
+#5 [api internal] load metadata for docker.io/library/node:24-alpine
+#5 DONE 2.4s
+
+#6 [portal internal] load .dockerignore
+#6 transferring context: 2B done
+#6 DONE 0.0s
+
+#7 [portal internal] load build context
+#7 transferring context: 3.75kB done
+#7 DONE 0.0s
+
+#8 [portal 1/3] FROM docker.io/library/nginx:alpine@sha256:df221db836e1754089190208cee7eeda94f233197056426eda74a43ab1abeac2
+#8 resolve docker.io/library/nginx:alpine@sha256:df221db836e1754089190208cee7eeda94f233197056426eda74a43ab1abeac2 0.0s done
+#8 ...
+
+#9 [api internal] load .dockerignore
+#9 transferring context: 64B done
+#9 DONE 0.0s
+
+#10 [api internal] load build context
+#10 transferring context: 4.74kB 0.0s done
+#10 DONE 0.0s
+
+#8 [portal 1/3] FROM docker.io/library/nginx:alpine@sha256:df221db836e1754089190208cee7eeda94f233197056426eda74a43ab1abeac2
+#8 sha256:3dd08163706a20b20622f310ec10258cc96e9007ab357f7201955bc880ac17f4 12.32kB / 12.32kB done
+#8 sha256:e2de96513ba9eb53b431787ec8a65cdde380ac4772a3e4c4b714dcfde2a102b5 0B / 3.85MB 0.2s
+#8 sha256:df221db836e1754089190208cee7eeda94f233197056426eda74a43ab1abeac2 10.33kB / 10.33kB done
+#8 sha256:d9aae54b58315e84b9c3ac5f00bad6610e0e28ad9ff28fcde694647e0be13131 0B / 1.93MB 0.2s
+#8 sha256:6c53d0b2a666ed8f8fad8d9982e30cf24eb085036c17b27591665ca25e1ba40c 0B / 629B 0.2s
+#8 sha256:0530961ff0592b58c10f767535cc0abdfccf9e389ff7cc90f87320c1bc7e8506 2.50kB / 2.50kB done
+#8 sha256:e2de96513ba9eb53b431787ec8a65cdde380ac4772a3e4c4b714dcfde2a102b5 1.05MB / 3.85MB 0.4s
+#8 sha256:e2de96513ba9eb53b431787ec8a65cdde380ac4772a3e4c4b714dcfde2a102b5 2.10MB / 3.85MB 0.6s
+#8 sha256:d9aae54b58315e84b9c3ac5f00bad6610e0e28ad9ff28fcde694647e0be13131 1.05MB / 1.93MB 0.6s
+#8 sha256:6c53d0b2a666ed8f8fad8d9982e30cf24eb085036c17b27591665ca25e1ba40c 629B / 629B 0.5s done
+#8 sha256:745dfb2690dd8627e1593941caccc756f14943df7930a478beb4e808c5695cb9 0B / 965B 0.6s
+#8 sha256:d9aae54b58315e84b9c3ac5f00bad6610e0e28ad9ff28fcde694647e0be13131 1.93MB / 1.93MB 0.7s done
+#8 sha256:9a9a644fdd6a3681d43dace44c8cfef374cfd7b24f433113379ea483692498a8 0B / 404B 0.7s
+#8 sha256:e2de96513ba9eb53b431787ec8a65cdde380ac4772a3e4c4b714dcfde2a102b5 3.85MB / 3.85MB 0.7s done
+#8 sha256:745dfb2690dd8627e1593941caccc756f14943df7930a478beb4e808c5695cb9 965B / 965B 0.7s done
+#8 extracting sha256:e2de96513ba9eb53b431787ec8a65cdde380ac4772a3e4c4b714dcfde2a102b5 0.1s
+#8 sha256:64c8194480fee2c03e01cc561cf5542733627d2c7de493a028139677025f975c 0B / 1.21kB 0.8s
+#8 sha256:e76228b47809e8a4bd37a6ba52a04d282d8c72ddf0ff9e8b83fd6318631abd52 0B / 1.40kB 0.8s
+#8 sha256:9a9a644fdd6a3681d43dace44c8cfef374cfd7b24f433113379ea483692498a8 404B / 404B 0.9s done
+#8 extracting sha256:e2de96513ba9eb53b431787ec8a65cdde380ac4772a3e4c4b714dcfde2a102b5 0.1s done
+#8 sha256:e72112c14215406dc7f23ef8e5cfdfddeb8662176167382ad64ec86f52b7a88e 0B / 20.53MB 0.9s
+#8 extracting sha256:d9aae54b58315e84b9c3ac5f00bad6610e0e28ad9ff28fcde694647e0be13131 0.1s done
+#8 sha256:64c8194480fee2c03e01cc561cf5542733627d2c7de493a028139677025f975c 1.21kB / 1.21kB 0.9s done
+#8 sha256:e76228b47809e8a4bd37a6ba52a04d282d8c72ddf0ff9e8b83fd6318631abd52 1.40kB / 1.40kB 0.9s done
+#8 sha256:e72112c14215406dc7f23ef8e5cfdfddeb8662176167382ad64ec86f52b7a88e 1.05MB / 20.53MB 1.2s
+#8 extracting sha256:6c53d0b2a666ed8f8fad8d9982e30cf24eb085036c17b27591665ca25e1ba40c done
+#8 extracting sha256:745dfb2690dd8627e1593941caccc756f14943df7930a478beb4e808c5695cb9 done
+#8 extracting sha256:9a9a644fdd6a3681d43dace44c8cfef374cfd7b24f433113379ea483692498a8 done
+#8 extracting sha256:64c8194480fee2c03e01cc561cf5542733627d2c7de493a028139677025f975c
+#8 sha256:e72112c14215406dc7f23ef8e5cfdfddeb8662176167382ad64ec86f52b7a88e 3.15MB / 20.53MB 1.3s
+#8 extracting sha256:64c8194480fee2c03e01cc561cf5542733627d2c7de493a028139677025f975c done
+#8 extracting sha256:e76228b47809e8a4bd37a6ba52a04d282d8c72ddf0ff9e8b83fd6318631abd52 done
+#8 sha256:e72112c14215406dc7f23ef8e5cfdfddeb8662176167382ad64ec86f52b7a88e 5.24MB / 20.53MB 1.4s
+#8 sha256:e72112c14215406dc7f23ef8e5cfdfddeb8662176167382ad64ec86f52b7a88e 7.34MB / 20.53MB 1.6s
+#8 sha256:e72112c14215406dc7f23ef8e5cfdfddeb8662176167382ad64ec86f52b7a88e 8.39MB / 20.53MB 1.7s
+#8 sha256:e72112c14215406dc7f23ef8e5cfdfddeb8662176167382ad64ec86f52b7a88e 11.53MB / 20.53MB 1.9s
+#8 sha256:e72112c14215406dc7f23ef8e5cfdfddeb8662176167382ad64ec86f52b7a88e 13.63MB / 20.53MB 2.0s
+#8 sha256:e72112c14215406dc7f23ef8e5cfdfddeb8662176167382ad64ec86f52b7a88e 16.78MB / 20.53MB 2.2s
+#8 sha256:e72112c14215406dc7f23ef8e5cfdfddeb8662176167382ad64ec86f52b7a88e 18.87MB / 20.53MB 2.3s
+#8 sha256:e72112c14215406dc7f23ef8e5cfdfddeb8662176167382ad64ec86f52b7a88e 20.53MB / 20.53MB 2.4s done
+#8 extracting sha256:e72112c14215406dc7f23ef8e5cfdfddeb8662176167382ad64ec86f52b7a88e
+#8 extracting sha256:e72112c14215406dc7f23ef8e5cfdfddeb8662176167382ad64ec86f52b7a88e 0.4s done
+#8 DONE 3.1s
+
+#11 [portal 2/3] COPY default.conf.template /etc/nginx/templates/default.conf.template
+#11 DONE 0.1s
+
+#12 [api 1/4] FROM docker.io/library/node:24-alpine@sha256:ebfe2f90462722a7a4de65e91990e97fe0d401c70e0e762c5b53302f905ec1c1
+#12 resolve docker.io/library/node:24-alpine@sha256:ebfe2f90462722a7a4de65e91990e97fe0d401c70e0e762c5b53302f905ec1c1 0.0s done
+#12 sha256:ebfe2f90462722a7a4de65e91990e97fe0d401c70e0e762c5b53302f905ec1c1 3.87kB / 3.87kB done
+#12 sha256:83f1c388c31fb2e51f7cbd4dea949b96260798c98f206e8e4696bc93bd964e3a 1.72kB / 1.72kB done
+#12 sha256:c10884952bb8c37122fcc3fe6f97af3ab0a80e5eb02ee5df707406b4e11a7e3e 6.44kB / 6.44kB done
+#12 sha256:e2de96513ba9eb53b431787ec8a65cdde380ac4772a3e4c4b714dcfde2a102b5 3.85MB / 3.85MB 0.6s done
+#12 extracting sha256:e2de96513ba9eb53b431787ec8a65cdde380ac4772a3e4c4b714dcfde2a102b5 0.1s done
+#12 sha256:3c504d5a797be28f9de43147d49cd8ecb2eea46dfaf7beb8715db695d5f0a7f0 15.73MB / 56.52MB 3.0s
+#12 sha256:02f40d53b06f6b91fec0cd6a6719656da99270bff8ee54ed8dcdf4c157763fc1 1.26MB / 1.26MB 1.4s done
+#12 sha256:7ce7dcbafb7f750cf0c6be3c30e34372b06dd1182fa67f6ae30782c8150c5444 444B / 444B 1.6s done
+#12 ...
+
+#13 [portal 3/3] COPY index.html /usr/share/nginx/html/index.html
+#13 DONE 0.0s
+
+#14 [portal] exporting to image
+#14 exporting layers 0.0s done
+#14 writing image sha256:435123e535cd069009e815129d592e50026043f64eb280e7b9c29f3b94531727 done
+#14 naming to docker.io/library/turma-b-portal done
+#14 DONE 0.0s
+
+#12 [api 1/4] FROM docker.io/library/node:24-alpine@sha256:ebfe2f90462722a7a4de65e91990e97fe0d401c70e0e762c5b53302f905ec1c1
+#12 ...
+
+#15 [portal] resolving provenance for metadata file
+#15 DONE 0.0s
+
+#12 [api 1/4] FROM docker.io/library/node:24-alpine@sha256:ebfe2f90462722a7a4de65e91990e97fe0d401c70e0e762c5b53302f905ec1c1
+#12 sha256:3c504d5a797be28f9de43147d49cd8ecb2eea46dfaf7beb8715db695d5f0a7f0 18.87MB / 56.52MB 3.3s
+#12 sha256:3c504d5a797be28f9de43147d49cd8ecb2eea46dfaf7beb8715db695d5f0a7f0 22.02MB / 56.52MB 3.5s
+#12 sha256:3c504d5a797be28f9de43147d49cd8ecb2eea46dfaf7beb8715db695d5f0a7f0 25.17MB / 56.52MB 3.7s
+#12 sha256:3c504d5a797be28f9de43147d49cd8ecb2eea46dfaf7beb8715db695d5f0a7f0 30.41MB / 56.52MB 4.1s
+#12 sha256:3c504d5a797be28f9de43147d49cd8ecb2eea46dfaf7beb8715db695d5f0a7f0 33.55MB / 56.52MB 4.3s
+#12 sha256:3c504d5a797be28f9de43147d49cd8ecb2eea46dfaf7beb8715db695d5f0a7f0 37.75MB / 56.52MB 4.6s
+#12 sha256:3c504d5a797be28f9de43147d49cd8ecb2eea46dfaf7beb8715db695d5f0a7f0 40.89MB / 56.52MB 4.8s
+#12 sha256:3c504d5a797be28f9de43147d49cd8ecb2eea46dfaf7beb8715db695d5f0a7f0 45.09MB / 56.52MB 5.1s
+#12 sha256:3c504d5a797be28f9de43147d49cd8ecb2eea46dfaf7beb8715db695d5f0a7f0 50.33MB / 56.52MB 5.5s
+#12 sha256:3c504d5a797be28f9de43147d49cd8ecb2eea46dfaf7beb8715db695d5f0a7f0 54.53MB / 56.52MB 5.7s
+#12 sha256:3c504d5a797be28f9de43147d49cd8ecb2eea46dfaf7beb8715db695d5f0a7f0 56.52MB / 56.52MB 5.8s done
+#12 extracting sha256:3c504d5a797be28f9de43147d49cd8ecb2eea46dfaf7beb8715db695d5f0a7f0 0.1s
+#12 extracting sha256:3c504d5a797be28f9de43147d49cd8ecb2eea46dfaf7beb8715db695d5f0a7f0 1.7s done
+#12 extracting sha256:02f40d53b06f6b91fec0cd6a6719656da99270bff8ee54ed8dcdf4c157763fc1
+#12 extracting sha256:02f40d53b06f6b91fec0cd6a6719656da99270bff8ee54ed8dcdf4c157763fc1 0.0s done
+#12 extracting sha256:7ce7dcbafb7f750cf0c6be3c30e34372b06dd1182fa67f6ae30782c8150c5444 done
+#12 DONE 7.7s
+
+#16 [api 2/4] WORKDIR /app
+#16 DONE 0.1s
+
+#17 [api 3/4] COPY package.json server.ts ./
+#17 DONE 0.0s
+
+#18 [api 4/4] RUN mkdir -p /app/registros
+#18 DONE 0.2s
+
+#19 [api] exporting to image
+#19 exporting layers 0.0s done
+#19 writing image sha256:6d7b9f3ed26ffdaee4b8b27e9b04ae97e3ac7fb03490ff7c7fd1d2a1f77d6e4e done
+#19 naming to docker.io/library/turma-b-api done
+#19 DONE 0.1s
+
+#20 [api] resolving provenance for metadata file
+#20 DONE 0.0s
+[+] up 5/5
+ ✔ Image turma-b-api          Built                                                                                                                                        11.0s
+ ✔ Image turma-b-portal       Built                                                                                                                                        11.0s
+ ✔ Network turma-b_default    Created                                                                                                                                      0.1s
+ ✔ Container turma-b-api-1    Created                                                                                                                                      0.1s
+ ✔ Container turma-b-portal-1 Created                                                                                                                                      0.0s
+PS C:\Users\Unicesumar\Desktop\turma-b> docker compose ps
+NAME               IMAGE            COMMAND                  SERVICE   CREATED         STATUS         PORTS
+turma-b-api-1      turma-b-api      "docker-entrypoint.s…"   api       9 seconds ago   Up 8 seconds   3000/tcp
+turma-b-portal-1   turma-b-portal   "/docker-entrypoint.…"   portal    9 seconds ago   Up 8 seconds   127.0.0.1:8081->80/tcp
+PS C:\Users\Unicesumar\Desktop\turma-b> docker compose logs --no-color
+api-1     | {"evento":"inicio","porta":3001}
+portal-1  | /docker-entrypoint.sh: /docker-entrypoint.d/ is not empty, will attempt to perform configuration
+portal-1  | /docker-entrypoint.sh: Looking for shell scripts in /docker-entrypoint.d/
+portal-1  | /docker-entrypoint.sh: Launching /docker-entrypoint.d/10-listen-on-ipv6-by-default.sh
+portal-1  | 10-listen-on-ipv6-by-default.sh: info: Getting the checksum of /etc/nginx/conf.d/default.conf
+portal-1  | 10-listen-on-ipv6-by-default.sh: info: Enabled listen on IPv6 in /etc/nginx/conf.d/default.conf
+portal-1  | /docker-entrypoint.sh: Sourcing /docker-entrypoint.d/15-local-resolvers.envsh
+portal-1  | /docker-entrypoint.sh: Launching /docker-entrypoint.d/20-envsubst-on-templates.sh
+portal-1  | 20-envsubst-on-templates.sh: Running envsubst on /etc/nginx/templates/default.conf.template to /etc/nginx/conf.d/default.conf
+portal-1  | /docker-entrypoint.sh: Launching /docker-entrypoint.d/30-tune-worker-processes.sh
+portal-1  | /docker-entrypoint.sh: Configuration complete; ready for start up
+portal-1  | 2026/10/08 22:29:04 [notice] 1#1: using the "epoll" event method
+portal-1  | 2026/10/08 22:29:04 [notice] 1#1: nginx/1.31.6
+portal-1  | 2026/10/08 22:29:04 [notice] 1#1: built by gcc 15.2.0 (Alpine 15.2.0) 
+portal-1  | 2026/10/08 22:29:04 [notice] 1#1: OS: Linux 6.6.87.2-microsoft-standard-WSL2
+portal-1  | 2026/10/08 22:29:04 [notice] 1#1: getrlimit(RLIMIT_NOFILE): 1048576:1048576
+portal-1  | 2026/10/08 22:29:04 [notice] 1#1: start worker processes
+portal-1  | 2026/10/08 22:29:04 [notice] 1#1: start worker process 36
+portal-1  | 2026/10/08 22:29:04 [notice] 1#1: start worker process 37
+portal-1  | 2026/10/08 22:29:04 [notice] 1#1: start worker process 38
+portal-1  | 2026/10/08 22:29:04 [notice] 1#1: start worker process 39
+portal-1  | 2026/10/08 22:29:04 [notice] 1#1: start worker process 40
+portal-1  | 2026/10/08 22:29:04 [notice] 1#1: start worker process 41
+portal-1  | 2026/10/08 22:29:04 [notice] 1#1: start worker process 42
+portal-1  | 2026/10/08 22:29:04 [notice] 1#1: start worker process 43
+portal-1  | 2026/10/08 22:29:04 [notice] 1#1: start worker process 44
+portal-1  | 2026/10/08 22:29:04 [notice] 1#1: start worker process 45
+portal-1  | 2026/10/08 22:29:04 [notice] 1#1: start worker process 46
+portal-1  | 2026/10/08 22:29:04 [notice] 1#1: start worker process 47
+portal-1  | 2026/10/08 22:29:04 [notice] 1#1: start worker process 48
+portal-1  | 2026/10/08 22:29:04 [notice] 1#1: start worker process 49
+portal-1  | 2026/10/08 22:29:04 [notice] 1#1: start worker process 50
+portal-1  | 2026/10/08 22:29:04 [notice] 1#1: start worker process 51
+PS C:\Users\Unicesumar\Desktop\turma-b> docker compose ps
+NAME               IMAGE            COMMAND                  SERVICE   CREATED          STATUS          PORTS
+turma-b-api-1      turma-b-api      "docker-entrypoint.s…"   api       36 seconds ago   Up 36 seconds   3000/tcp
+turma-b-portal-1   turma-b-portal   "/docker-entrypoint.…"   portal    36 seconds ago   Up 35 seconds   127.0.0.1:8081->80/tcp
